@@ -29,14 +29,14 @@ steps:
   inputs:
     targetType: filePath
     filePath: ./TextReplacement.ps1
-    arguments: '-FileName "$(Agent.BuildDirectory)\s\Help.v2\AGP Help.hsc" -OriginalText "C:\git\3WInc\AGPMaker2\Help\Source" -ReplacementText "$(Agent.BuildDirectory)\s\Help.v2\Source"'
+    arguments: '-FileName "$(Agent.BuildDirectory)\s\Help.v2\AGP Help.hsc" -OriginalText "C:\git\T3WInc\AGPMaker.Help\Help.v2\src" -ReplacementText "$(Agent.BuildDirectory)\s\Help.v2\src"'
   
 - task: PowerShell@2
   displayName: 'Set the location of output for Help'
   inputs:
     targetType: filePath
     filePath: ./TextReplacement.ps1
-    arguments: '-FileName "$(Agent.BuildDirectory)\s\Help.v2\AGP Help.hsc" -OriginalText "C:\git\3WInc\AGPMaker2\Scripts\Click-Once\Support.Files\" -ReplacementText "$(Agent.BuildDirectory)\b\"'
+    arguments: '-FileName "$(Agent.BuildDirectory)\s\Help.v2\AGP Help.hsc" -OriginalText "C:\git\T3WInc\AGPMaker.Help\Support.Files\" -ReplacementText "$(Agent.BuildDirectory)\s\Support.Files\"'
 
 - task: BatchScript@1
   displayName: 'Run script "C:\Program Files (x86)\Just Great Software\HelpScribble\HelpScr.exe"'
