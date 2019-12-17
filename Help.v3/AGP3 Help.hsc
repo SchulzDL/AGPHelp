@@ -9,12 +9,12 @@ AGPMaker v3 Help
 Copyright 2018 by The Web We Weave, Inc.
 FALSE
 0x0409   English (U.S.)
-C:\git\3WInc\AGPMaker3\Help\Source
+C:\git\T3WInc\AGPMaker.Help\Help.v3\src
 1
 BrowseButtons()
 0
 FALSE
-C:\git\3WInc\AGPMaker3\Source\AGPMaker\bin\Debug\
+C:\git\T3WInc\AGPMaker.Help\Support.Files\
 FALSE
 TRUE
 16777215
