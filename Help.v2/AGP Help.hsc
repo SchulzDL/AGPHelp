@@ -9,12 +9,12 @@ AGP Help
 (c) 2017  - The Web We Weave, Inc.
 FALSE
 0x0409   English (U.S.)
-C:\git\3WInc\AGPMaker2\Help\Source
+C:\git\T3WInc\AGPMaker.Help\Help.VIPs_2\src
 1
 BrowseButtons()
 0
 FALSE
-C:\git\3WInc\AGPMaker2\Scripts\Click-Once\Support.Files\
+C:\git\T3WInc\AGPMaker.Help\Support.Files\
 FALSE
 TRUE
 16777215
