@@ -9,7 +9,7 @@ AGP Help
 (c) 2017  - The Web We Weave, Inc.
 FALSE
 0x0409   English (U.S.)
-C:\git\T3WInc\AGPMaker.Help\Help.VIPs_2\src
+C:\git\T3WInc\AGPMaker.Help\Help.v2\src
 1
 BrowseButtons()
 0
