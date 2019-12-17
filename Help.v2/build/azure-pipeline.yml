@@ -4,43 +4,60 @@ pool:
     demands: Cmd
     
   steps:
-    - task: UniversalPackages@0
-      displayName: 'TextReplacement.ps1 download'
-      inputs:
-        vstsFeed: 'e6dffc65-5baa-4671-b51a-db24b7afdd56'
-        vstsFeedPackage: '58e96274-12ef-4959-94d8-4febac8fc30d'
-        vstsPackageVersion: 1.0.2755
+  - task: GitVersion@5
+    inputs:
+      runtime: 'full'
+      configFilePath: 'Help.v2/gitVersion.yml'
+    
+  - task: petergroenewegen.PeterGroenewegen-Xpirit-Vsts-Build-InlinePowershell.Xpirit-Vsts-Build-InlinePowershell.InlinePowershell@1
+    displayName: 'Inline Powershell'
+    inputs:
+    Script: |
+      Param(
+          $FinalVersion
+      )     
+      [string] $BuildDefName = "$env:BUILD_DEFINITIONNAME"      
+      Write-Host "##vso[build.updatebuildnumber]$(agphelp_v$($FinalVersion)" 
+
+    ScriptArguments: '-FinalVersion $(GitVersion.SemVer)'
+
+  - task: UniversalPackages@0
+    displayName: 'TextReplacement.ps1 download'
+    inputs:
+      vstsFeed: 'e6dffc65-5baa-4671-b51a-db24b7afdd56'
+      vstsFeedPackage: '58e96274-12ef-4959-94d8-4febac8fc30d'
+      vstsPackageVersion: 1.0.2755
    
   - task: PowerShell@2
-      displayName: 'Set the location of Images for Help'
-      inputs:
-        targetType: filePath
-        filePath: ./TextReplacement.ps1
-        arguments: '-FileName "$(Agent.BuildDirectory)\s\Help.v2\AGP Help.hsc" -OriginalText "C:\git\3WInc\AGPMaker2\Help\Source" -ReplacementText "$(Agent.BuildDirectory)\s\Help.v2\Source"'
+    displayName: 'Set the location of Images for Help'
+    inputs:
+      targetType: filePath
+      filePath: ./TextReplacement.ps1
+      arguments: '-FileName "$(Agent.BuildDirectory)\s\Help.v2\AGP Help.hsc" -OriginalText "C:\git\3WInc\AGPMaker2\Help\Source" -ReplacementText "$(Agent.BuildDirectory)\s\Help.v2\Source"'
     
-    - task: PowerShell@2
-      displayName: 'Set the location of output for Help'
-      inputs:
-        targetType: filePath
-        filePath: ./TextReplacement.ps1
-        arguments: '-FileName "$(Agent.BuildDirectory)\s\Help.v2\AGP Help.hsc" -OriginalText "C:\git\3WInc\AGPMaker2\Scripts\Click-Once\Support.Files\" -ReplacementText "$(Agent.BuildDirectory)\b\"'
+  - task: PowerShell@2
+    displayName: 'Set the location of output for Help'
+    inputs:
+      targetType: filePath
+      filePath: ./TextReplacement.ps1
+      arguments: '-FileName "$(Agent.BuildDirectory)\s\Help.v2\AGP Help.hsc" -OriginalText "C:\git\3WInc\AGPMaker2\Scripts\Click-Once\Support.Files\" -ReplacementText "$(Agent.BuildDirectory)\b\"'
+  
+  - task: BatchScript@1
+    displayName: 'Run script "C:\Program Files (x86)\Just Great Software\HelpScribble\HelpScr.exe"'
+    inputs:
+      filename: '"C:\Program Files (x86)\Just Great Software\HelpScribble\HelpScr.exe"'
+      arguments: '"$(Agent.BuildDirectory)\s\Help.v2\AGP Help.hsc" /chtml /q'
     
-    - task: BatchScript@1
-      displayName: 'Run script "C:\Program Files (x86)\Just Great Software\HelpScribble\HelpScr.exe"'
-      inputs:
-        filename: '"C:\Program Files (x86)\Just Great Software\HelpScribble\HelpScr.exe"'
-        arguments: '"$(Agent.BuildDirectory)\s\Help.v2\AGP Help.hsc" /chtml /q'
-    
-    - task: UniversalPackages@0
-      displayName: 'Universal publish'
-      inputs:
-        command: publish
-        vstsFeed: 'e6dffc65-5baa-4671-b51a-db24b7afdd56'
-        vstsFeedPackage: 'agphelp-v2'
-        vstsPackageVersion: '2.4.$(Build.BuildId)'
-        publishDirectory: '"$(Agent.BuildDirectory)\b\"'
-        vstsFeedPublish: 'e6dffc65-5baa-4671-b51a-db24b7afdd56'
-        vstsFeedPackagePublish: 'agphelp-v2'
-        versionOption: custom
-        versionPublish: '2.4.$(Build.BuildId)'
-        packagePublishDescription: 'The help file for AGPMaker v2.4'
+  - task: UniversalPackages@0
+    displayName: 'Universal publish'
+    inputs:
+      command: publish
+      vstsFeed: 'e6dffc65-5baa-4671-b51a-db24b7afdd56'
+      vstsFeedPackage: 'agphelp-v2'
+      vstsPackageVersion: '$(GitVersion.SemVer)'
+      publishDirectory: '"$(Agent.BuildDirectory)\b\"'
+      vstsFeedPublish: 'e6dffc65-5baa-4671-b51a-db24b7afdd56'
+      vstsFeedPackagePublish: 'agphelp-v2'
+      versionOption: custom
+      versionPublish: '$(GitVersion.SemVer)'
+      packagePublishDescription: 'The help file for AGPMaker v2.4'
