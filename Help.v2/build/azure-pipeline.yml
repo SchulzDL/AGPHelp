@@ -8,17 +8,14 @@ steps:
     runtime: 'full'
     configFilePath: 'Help.v2/gitVersion.yml'
     
-- task: petergroenewegen.PeterGroenewegen-Xpirit-Vsts-Build-InlinePowershell.Xpirit-Vsts-Build-InlinePowershell.InlinePowershell@1
-  displayName: 'Inline Powershell'
+- task: InlinePowershell@1
   inputs:
-  Script: |
-    Param(
-        $FinalVersion
-    )     
-    [string] $BuildDefName = "$env:BUILD_DEFINITIONNAME"      
-    Write-Host "##vso[build.updatebuildnumber]$(agphelp_v$($FinalVersion)" 
-
-  ScriptArguments: '-FinalVersion $(GitVersion.SemVer)'
+    Script: |
+      Param(
+                $FinalVersion
+            )       
+            Write-Host "##vso[build.updatebuildnumber]$(agphelp_v$($FinalVersion)"
+    ScriptArguments: '-FinalVersion $(GitVersion.SemVer)'
 
 - task: UniversalPackages@0
   displayName: 'TextReplacement.ps1 download'
