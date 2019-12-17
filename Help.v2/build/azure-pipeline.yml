@@ -1,7 +1,7 @@
 pool:
 
-    name: 3WInc-Pool
-    demands: Cmd
+  name: 3WInc-Pool
+  demands: Cmd
     
   steps:
   - task: GitVersion@5
