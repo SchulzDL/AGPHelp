@@ -6,7 +6,7 @@ steps:
 - task: GitVersion@5
   inputs:
     runtime: 'full'
-    configFilePath: 'Help.v2/gitVersion.yml'
+    configFilePath: '$(Agent.BuildDirectory)\s\Help.v2\gitVersion.yml'
     
 - task: InlinePowershell@1
   inputs:
