@@ -14,7 +14,7 @@ steps:
       Param(
                 $FinalVersion
             )       
-            Write-Host "##vso[build.updatebuildnumber]$(agphelp_v$($FinalVersion)"
+            Write-Host "##vso[build.updatebuildnumber]agphelp_v$($FinalVersion)"
     ScriptArguments: '-FinalVersion $(GitVersion.SemVer)'
 
 - task: UniversalPackages@0
