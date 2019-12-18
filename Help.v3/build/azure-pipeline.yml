@@ -6,7 +6,7 @@ steps:
 - task: GitVersion@5
   inputs:
     runtime: 'full'
-    configFilePath: 'Help.v2/gitVersion.yml'
+    configFilePath: 'Help.v3/gitVersion.yml'
     
 - task: InlinePowershell@1
   inputs:
@@ -29,31 +29,29 @@ steps:
   inputs:
     targetType: filePath
     filePath: ./TextReplacement.ps1
-    arguments: '-FileName "$(Agent.BuildDirectory)\s\Help.v2\AGP Help.hsc" -OriginalText "C:\git\T3WInc\AGPMaker.Help\Help.v2\src" -ReplacementText "$(Agent.BuildDirectory)\s\Help.v2\src"'
+    arguments: '-FileName "$(Agent.BuildDirectory)\s\Help.v3\AGP Help.hsc" -OriginalText "C:\git\T3WInc\AGPMaker.Help\Help.v3\src" -ReplacementText "$(Agent.BuildDirectory)\s\Help.v3\src"'
   
 - task: PowerShell@2
   displayName: 'Set the location of output for Help'
   inputs:
     targetType: filePath
     filePath: ./TextReplacement.ps1
-    arguments: '-FileName "$(Agent.BuildDirectory)\s\Help.v2\AGP Help.hsc" -OriginalText "C:\git\T3WInc\AGPMaker.Help\Support.Files\" -ReplacementText "$(Agent.BuildDirectory)\s\Support.Files\"'
+    arguments: '-FileName "$(Agent.BuildDirectory)\s\Help.v3\AGP Help.hsc" -OriginalText "C:\git\T3WInc\AGPMaker.Help\Support.Files\" -ReplacementText "$(Agent.BuildDirectory)\s\Support.Files\"'
 
 - task: BatchScript@1
   displayName: 'Run script "C:\Program Files (x86)\Just Great Software\HelpScribble\HelpScr.exe"'
   inputs:
     filename: '"C:\Program Files (x86)\Just Great Software\HelpScribble\HelpScr.exe"'
-    arguments: '"$(Agent.BuildDirectory)\s\Help.v2\AGP Help.hsc" /chtml /q'
+    arguments: '"$(Agent.BuildDirectory)\s\Help.v3\AGP Help.hsc" /chtml /q'
     
 - task: UniversalPackages@0
   displayName: 'Universal publish'
   inputs:
-    command: publish
-    vstsFeed: 'e6dffc65-5baa-4671-b51a-db24b7afdd56'
-    vstsFeedPackage: 'agphelp-v2'
-    vstsPackageVersion: '$(GitVersion.SemVer)'
+    command: 'publish'
     publishDirectory: '"$(Agent.BuildDirectory)\b\"'
+    feedsToUsePublish: 'internal'
     vstsFeedPublish: 'e6dffc65-5baa-4671-b51a-db24b7afdd56'
-    vstsFeedPackagePublish: 'agphelp-v2'
-    versionOption: custom
+    vstsFeedPackagePublish: 'agphelp-v3'
+    versionOption: 'custom'
     versionPublish: '$(GitVersion.SemVer)'
-    packagePublishDescription: 'The help file for AGPMaker v2'
+    packagePublishDescription: 'The help file for AGPMaker v3'
